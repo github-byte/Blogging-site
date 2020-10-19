@@ -1,11 +1,15 @@
 //jshint esversion:6
 require('dotenv').config()
 const express = require("express");
+
+const https=require("https")
+
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const _ = require("lodash");
 const mongoose=require('mongoose');
-const encrypt=require("mongoose-encryption")
+const bcrypt=require("bcrypt")
+const saltRounds=10
 
  // Connection URL 
  mongoose.connect("mongodb://localhost:27017/blogDB",{useNewUrlParser: true, useUnifiedTopology: true }
@@ -20,7 +24,15 @@ const userSchema=new mongoose.Schema({
   password:String
 })
 
-userSchema.plugin(encrypt,{secret:process.env.SECRET,encryptedFields:['password']})
+
+//AIzaSyD6oJiuEy0e4SuQkuq4mxWwfyfEbmvfhWA
+
+  
+
+
+
+
+//serSchema.plugin(encrypt,{secret:process.env.SECRET,encryptedFields:['password']})
 
 const Blog=mongoose.model("Blog",blogSchema)
 
@@ -52,10 +64,25 @@ app.get("/about", function(req, res){
 });
 
 app.get("/contact", function(req, res){
-  res.render("contact", {contactContent: contactContent});
+
+  url=`https://www.googleapis.com/blogger/v3/blogs/3213900?key=AIzaSyD6oJiuEy0e4SuQkuq4mxWwfyfEbmvfhWA`
+
+https.get(url,function(response){
+  console.log(response.statusCode)
+ response.on("data",function(data){
+  console.log(JSON.parse(data));
+  console.log(data['description'])
+  res.render("contact",{news:data.name})
+ })
+ 
+})
 });
+
+
+
 app.get("/register",function(req,res){
   res.render("register")
+ 
 })
 app.get("/compose", function(req, res){
   res.render("compose");
@@ -66,30 +93,50 @@ app.get("/compose", function(req, res){
 const User= new mongoose.model('User',userSchema)
 
 app.post("/register",function(req,res){
-const newUser=new User({
-  username:req.body.email,
-  password:req.body.password
-})
-newUser.save(function(err){
-  if(err)
-  console.log(err)
+  bcrypt.hash(req.body.password,saltRounds,function(err,hash){
+    if(!err){
+    const newUser=new User({
+      username:req.body.email,
+      password:hash
+     
+    })
+    
+    newUser.save(function(err,data){
+      console.log(data)
+      if(err)
+      console.log(err)
+      else
+      res.redirect("/")
+    })
+  }
   else
-  res.redirect("/")
-})
+  console.log(err)
+  })
+  //after hashing use it in mongoose document
+
 })
 
 app.post('/login',function(req,res){
   let username=req.body.email
-  let password=req.body.password
+  let password=(req.body.password)
   User.findOne({username:username},function(err,foundUser){
     if(err){
       console.log(err)
-    }
+    } 
+    console.log(foundUser)
     if(foundUser){
-      if(foundUser.password===password){
-        res.render("Welcome",{username:username})
+      bcrypt.compare(password, foundUser.password, function(err, result) {
+        // result == true
+        if(result===true)
+        res.redirect("/")
+
+    });
+  }
+      else
+      {
+      res.render("register")
       }
-    }
+    
   })
 })
 
