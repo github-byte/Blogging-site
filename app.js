@@ -70,7 +70,7 @@ done(err,user)
 })
 }))
 
-
+let x="" ;let y="";
 
 passport.use(new GoogleStrategy({
   clientID:process.env.CLIENT_ID,
@@ -81,6 +81,9 @@ passport.use(new GoogleStrategy({
 function(accessToken, refreshToken, profile, cb) {
   console.log(profile)
   User.findOrCreate({ googleId: profile.id }, function (err, user) {
+    console.log(profile.photos.value)
+    x=profile.name.givenName;y=profile.photos[0].value
+    console.log(y)
     return cb(err, user);
   });
 }
@@ -130,7 +133,7 @@ app.get("/home", function(req, res){
       else
       {
         if(article)
-      res.render("home", {startingContent: homeStartingContent,posts:article})
+      res.render("home", {posts:article,username:x,photo:y})
     }
   })
 
