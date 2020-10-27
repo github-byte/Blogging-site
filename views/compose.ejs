@@ -2,6 +2,7 @@
 <html lang="en" dir="ltr">
   
 <head>
+  <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
   <meta charset="utf-8">
   <title>Daily Journal</title>
   <meta charset="utf-8">
@@ -27,11 +28,15 @@
       <div class="form-group">
         <label>Title</label>
         <input class="form-control" type="text" name="postTitle">
-        <label>Post</label>
+        <label >Post</label>
         <textarea class="form-control" name="postBody" rows="5" cols="30"></textarea>
       </div>
       <button class="btn btn-color"  name="button">Publish</button>
       <li id="register"><a href="/register">Logout</a></li>
     </form>
-
+    <script>
+      // Replace the <textarea id="editor1"> with a CKEditor 4
+      // instance, using default configuration.
+      CKEDITOR.replace( 'postBody' );
+  </script>
 <%- include("partials/footer"); -%>

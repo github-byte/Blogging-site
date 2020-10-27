@@ -1,6 +1,33 @@
 <%- include("partials/header"); -%>
-
+<div class="container">
+  <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
+  <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/inline/ckeditor.js"></script>
+<img img class="home-img" src="https://cdn.pixabay.com/photo/2018/04/06/23/22/notebook-3297317_1280.jpg" alt="">
   <h1 class="home-h1"><%=title%></h1>
-  <p><%=content%></p>
+  <hr>
+  <p class="home-p">Created at:<%=date%></p>
+  <p class="home-p" id="editor" contenteditable="true"><%=content%></p>
+</div>
 
+<form method="post " class="form"  action="/">
+  <h1 class="home-h1">Comments</h1>
+  <hr>
+  <textarea name="newComment"  cols="30" rows="10" ></textarea>
+ 
+  <button  type="submit">Comment</button>
+</form>
+
+
+<script>
+  const x=document.getElementById("editable").innerHTML;
+</script>
+
+
+<!-- <script>
+  InlineEditor
+      .create( document.querySelector( '#editor' ) )
+      .catch( error => {
+          console.error( error );
+      } );
+</script> -->
 <%- include("partials/footer"); -%>

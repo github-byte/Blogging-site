@@ -68,6 +68,10 @@ img{
   margin-top:7%;
   font-family: 'Lora', serif;
 }
+.home-p{
+  margin-top:3%;
+  font-family: 'Lora', serif;
+}
 .post1{
   margin-bottom:8%;
   font-family: 'Lora', serif;
@@ -226,7 +230,6 @@ box-shadow: 1px 2px 8px black;
 border-radius: 10px;
 } */
 .head2{
-  background-color:#F8F8F8;
  margin-top: 30px;
  width:1000px  }
 
@@ -269,3 +272,7 @@ font-family: 'Lora';
     margin-top: 10%;
     margin-left: 40%;
   }
+/* .popular-img{
+  height:,
+  width:,
+} */

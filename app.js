@@ -1,6 +1,7 @@
 //jshint esversion:6
 require('dotenv').config();
 const express = require("express");
+const axios=require("axios")
 const https=require("https")
 const  findOrCreate = require('mongoose-findorcreate')
 const bodyParser = require("body-parser");
@@ -17,8 +18,9 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 const homeStartingContent = "Home to thousands of stories";
 const aboutContent = "Share your amazing experiences";
-const contactContent = "Scelerisque eleifend donec pretium vulputate sapien. Rhoncus urna neque viverra justo nec ultrices. Arcu dui vivamus arcu felis bibendum. Consectetur adipiscing elit duis tristique. Risus viverra adipiscing at in tellus integer feugiat. Sapien nec sagittis aliquam malesuada bibendum arcu vitae. Consequat interdum varius sit amet mattis. Iaculis nunc sed augue lacus. Interdum posuere lorem ipsum dolor sit amet consectetur adipiscing elit. Pulvinar elementum integer enim neque. Ultrices gravida dictum fusce ut placerat orci nulla. Mauris in aliquam sem fringilla ut morbi tincidunt. Tortor posuere ac ut consequat semper viverra nam libero.";
-
+const today = new Date();
+            const dateTime = today.getDate()+'-'+(today.getMonth()+1)+'-'+ today.getFullYear()+ ' ' + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+console.log(dateTime)
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -42,17 +44,25 @@ mongoose.set("useCreateIndex",true)
 
 const blogSchema={
   title:String,
-  content:String
+  content:String,
+  timestamp:String,
 }
 const userSchema=new mongoose.Schema({
   username:String,
-  password:String
+  password:String,
+  timestamp:String
 })
+
+
+
+
 userSchema.plugin(passportLocalMongoose)
 
 userSchema.plugin(findOrCreate)
 
 const Blog=mongoose.model("Blog",blogSchema)
+
+
 
 
 
@@ -122,17 +132,18 @@ app.get("/auth/google/home",
 app.get("/home", function(req, res){
   
   Blog.find({},function(err,article){
+    console.log(article)
     if(err){
       
      console.log(err)
     }
       else
       if(req.isAuthenticated()){
+
         res.render("/")
       }
       else
       {
-        if(article)
       res.render("home", {posts:article,username:x,photo:y})
     }
   })
@@ -148,23 +159,15 @@ app.get("/login",function(req,res){
 })
 
 app.get("/about", function(req, res){
-  res.render("about", {aboutContent: aboutContent});
+  let set;
+  axios.get("http://newsapi.org/v2/everything?q=everything&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=e3f497d14748461f9353b8a6fd22bdfd")
+  .then(data=>{
+    {set=data.articles};
+  })
+  console.log(set)
+  res.render("about", {aboutContent: set});
 });
 
-app.get("/contact", function(req, res){
-
-  url=`https://www.googleapis.com/blogger/v3/blogs/3213900?key=AIzaSyD6oJiuEy0e4SuQkuq4mxWwfyfEbmvfhWA`
-
-https.get(url,function(response){
-  console.log(response.statusCode)
- response.on("data",function(data){
-  console.log(JSON.parse(data));
-  console.log(data['description'])
-  res.render("contact",{news:data.name})
- })
- 
-})
-});
 
 
 
@@ -201,7 +204,7 @@ app.post("/register",function(req,res){
 app.post('/login',function(req,res){
   const user = new User({
     username: req.body.username,
-    password: req.body.password
+    password: req.body.password,
   });
 
   req.login(user, function(err){
@@ -215,35 +218,98 @@ app.post('/login',function(req,res){
   });
 })
 
+app.post("/delete",function(req,res){
+  const id=(req.body.checkbox)
+  console.log(id)
+  Blog.findByIdAndRemove(id,function(err){
+    if(!err){
+      console.log("success")
+      res.redirect("/home");
+    }
+    
+  })
+})
+
 
 app.post("/compose", function(req, res){
 
     const post=new Blog({
    title:req.body.postTitle,
-   content:req.body.postBody
+   content:req.body.postBody,
+   timestamp:dateTime
     })
 
   post.save(function(err){
     if(!err){
-      res.redirect("/")
+      res.redirect("/home")
  
     }
   });
 });
 
-app.get("/posts/:postName", function(req, res){
-  const requestedTitle = (req.params.postName);
-  Blog.findOne({_id:requestedTitle},function(err,article){
+app.get("/posts/:postId", function(req, res){
+
+  const requestedPostId =req.params.postId;
+  
+    Blog.findOne({_id: requestedPostId}, function(err, post)
+    {
+      if(err){
+        console.log(err)
+      }
+    else
+     {
+       res.render("post",{title: post.title,
+                     content: post.content,
+                     date:post.timestamp})
+    //  Blog.update({comment:"New comment"},function(err,comm){
+    //         if (err){console.log(err)}
+    //         else{
+    //           res.render("post", {
+    //              title: post.title,
+    //              content: post.content,
+    //              comment:comm.comment,
+    //              date:post.timestamp})
+    //             }
+    //         })
+          }
+     })
+     
+    })
+     
+    
+
+  
+  
+
+// app.get("/posts/:postName", function(req, res){
+//   const requestedTitle = (req.params.postName);
+//   Blog.findOne({_id:requestedTitle},function(err,article){
+//  console.log(article)
+//     const storedTitle = (article._id);
+//     console.log(storedTitle)
+//     if(err){console.log(err)}
+//         if (!err)
+//          {
+//           res.render("post", {title: article.title,content: article.content});
+//            }  
+//   })
  
-    const storedTitle = (article._id);
-    console.log(storedTitle)
-        if (!err)
-         {
-          res.render("post", {title: article.title,content: article.content});
-           }  
+// });
+
+
+app.get("/comment",function(req,res){
+  Comment.find({},function(err,com){
+    console.log(com)
+    if(err){
+      console.log(err)
+    }
+    else
+    res.render("comment",{posts:com})
   })
- 
-});
+})
+
+
+
 
 app.listen(3000, function() {
   console.log("Server started on port 3000");
