@@ -1,33 +1,90 @@
-<%- include("partials/header"); -%>
+<!DOCTYPE html>
+<html lang="en" dir="ltr" style=background-image:url()>
+  
+<head >
+  <meta charset="utf-8">
+  <title>Daily Journal</title>
+  <meta charset="utf-8">
+  <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  
+
+  <link rel="stylesheet" href="/css/styles.css">
+ <nav class="navbar navbar-default">
+   <div class="container">
+     <div class="navbar-header">
+       <p class="navbar-brand">DAILY JOURNAL</p>
+     </div>
+       <ul class="nav navbar-nav navbar-right">
+         <li id="home"><a href="/">WELCOME</a></li>
+         <li id="about"><a href="/about">POPULAR</a></li>
+         <li id="login"><a href="/logout">LOGOUT</a></li>
+         <li id="register"><a href="/register">REGISTER</a></li>
+         
+       </ul>
+   </div>
+ </nav>
 <div class="container">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
   <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/inline/ckeditor.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
 <img img class="home-img" src="https://cdn.pixabay.com/photo/2018/04/06/23/22/notebook-3297317_1280.jpg" alt="">
   <h1 class="home-h1"><%=title%></h1>
   <hr>
   <p class="home-p">Created at:<%=date%></p>
-  <p class="home-p" id="editor" contenteditable="true"><%=content%></p>
+  <p class="home-p" id="editor" contenteditable="true"><%-content%></p>
 </div>
 
-<form method="post " class="form"  action="/">
-  <h1 class="home-h1">Comments</h1>
-  <hr>
-  <textarea name="newComment"  cols="30" rows="10" ></textarea>
- 
-  <button  type="submit">Comment</button>
-</form>
+  <div class="container">
+
+    <form method="post" class="form"  onsubmit="return doComment(this);">
+      <h3 class="home-h1">Comments</h3>
+      <hr>
+      <div class="media">
+        <div class="media-body">
+          <input type="" name="post_id" value="<%=post._id%> ">
+          <input type="text" name="username" >
+          <textarea class="form-control" name="comment" rows="5" cols="30"></textarea>
+          <button class="btn btn-color" >Submit</button>
+          <div class="container jumbotron" >
+            <div class="row">
+              <div class="col-lg-1">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1024px-User_icon_2.svg.png" alt="this image"  style="border-radius:100%">
+              </div>
+        </div>
+       
+          </div>
+       
+          </div>
+      </div>
+    </form>
+    
+    </div>
+
+
 
 
 <script>
-  const x=document.getElementById("editable").innerHTML;
+   CKEDITOR.replace( 'comment' );
 </script>
 
 
-<!-- <script>
-  InlineEditor
-      .create( document.querySelector( '#editor' ) )
-      .catch( error => {
-          console.error( error );
-      } );
-</script> -->
+<script>
+function doComment(form){
+  $.ajax({
+url:"/do-comment",
+method:"POST",
+data:{username:form.username.value,comment:form.comment.value,
+post_id:form.post_id.value},
+success:function(response){
+  alert(response);
+}
+
+  })
+return false;
+}
+</script>
 <%- include("partials/footer"); -%>

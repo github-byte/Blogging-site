@@ -18,7 +18,6 @@
        <ul class="nav navbar-nav navbar-right">
          <li id="home"><a href="/">WELCOME</a></li>
          <li id="about"><a href="/about">POPULAR</a></li>
-         <li id="contact"><a href="/contact">CONTACT US</a></li>
          <li id="login"><a href="/logout">LOGOUT</a></li>
          <li id="register"><a href="/register">REGISTER</a></li>
          
@@ -43,18 +42,15 @@
     <hr>
     <div class="head2">
     
- 
-      
-        <p ><%= post.content + '...' %>
+      <% const postString = post.content; %>
+      <p><%- post.content +"..."%></p>  
         <a href="/posts/<%=post._id%>">Read More</a>
         </p>
     
       <form action="/delete" method="post" >
         <button type="submit" name="checkbox" value="<%=post._id%>"  >DELETE</button>
+        <br><span><%=post.likes%> people like this.</span>
     </form>
-    <form action="/compose <%= post._id %>" method="post" >
-      <button type="submit" name="edit" value="<%=post._id%>"  >EDIT</button>
-  </form>
    
 
   </div>
@@ -71,3 +67,4 @@
 
   </div>
 
+  <!--  -->

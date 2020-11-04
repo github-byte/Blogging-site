@@ -181,7 +181,8 @@ animation: move-wave 3s;
 .diagonal-box {
 	background-image: linear-gradient(45deg, #654ea3, #eaafc8);
   transform: skewY(-8deg);
-  height:600px
+  height:600px;
+  margin-top: 200px;
 }
 
 #content {
@@ -271,6 +272,13 @@ font-family: 'Lora';
     text-align:center;
     margin-top: 10%;
     margin-left: 40%;
+  }
+
+  .last{
+    margin-top: 1000px;
+    background-color:#693268;
+    height: 500px;
+    width:100%px
   }
 /* .popular-img{
   height:,

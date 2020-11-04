@@ -12,73 +12,82 @@ const session = require('express-session')
 const passport=require("passport")
 const passportLocalMongoose=require("passport-local-mongoose")
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
- // Connection URL 
+const ObjectId=require("mongodb").ObjectID
 
-//serSchema.plugin(encrypt,{secret:process.env.SECRET,encryptedFields:['password']})
+const app = express();
 
-const homeStartingContent = "Home to thousands of stories";
+
 const aboutContent = "Share your amazing experiences";
 const today = new Date();
             const dateTime = today.getDate()+'-'+(today.getMonth()+1)+'-'+ today.getFullYear()+ ' ' + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 console.log(dateTime)
-const app = express();
+
 
 app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({extended: true}));
+
 
 app.use(express.static("public"));
+app.use(bodyParser.urlencoded({extended: true}));
+
 
 app.use(session({
 secret:"Our little secret.",
+
 resave:false,
-saveUninitialised:false
+saveUninitialised:false,
+
 }))
+
 app.use(passport.initialize());
 app.use(passport.session())
 
 
-mongoose.connect("mongodb://localhost:27017/blogDB",{useNewUrlParser: true, useUnifiedTopology: true }
-);
+
+mongoose.connect("mongodb+srv://admin:rinka@cluster0.4p2qd.mongodb.net/blogDB?retryWrites=true&w=majority",{useNewUrlParser: true, useUnifiedTopology: true });
+
 mongoose.set("useCreateIndex",true)
 
 const blogSchema={
   title:String,
   content:String,
   timestamp:String,
+  likes:Number,
 }
 const userSchema=new mongoose.Schema({
-  username:String,
+  email:String,
   password:String,
-  timestamp:String
+  googleId:String,
+  timestamp:String,
+  likedPost:String,
+
 })
 
-
+const commentSchema={
+  reply:String
+}
 
 
 userSchema.plugin(passportLocalMongoose)
 
 userSchema.plugin(findOrCreate)
-
-const Blog=mongoose.model("Blog",blogSchema)
-
-
-
-
-
-
-
-
 const User= new mongoose.model('User',userSchema)
+const Blog=mongoose.model("Blog",blogSchema)
+const Comment=mongoose.model("Comment",commentSchema)
+
+
 passport.use(User.createStrategy())
+
+
+
 passport.serializeUser(function(user,done){
   done(null,user.id)
 })
-passport.deserializeUser(User.deserializeUser(function(id,done){
+passport.deserializeUser(function(id,done){
 User.findById(id,function(err,user){
 done(err,user)
 })
-}))
+})
 
 let x="" ;let y="";
 
@@ -121,35 +130,27 @@ app.get("/auth/google/home",
 
 
 
-// app.get("/home",function(req,res){
-//   if(req.isAuthenticated()){
-//     res.render("/")
-//   }
-//   else
-//   res.render("home")
-// })
 
-app.get("/home", function(req, res){
-  
-  Blog.find({},function(err,article){
-    console.log(article)
-    if(err){
-      
-     console.log(err)
-    }
-      else
-      if(req.isAuthenticated()){
-
-        res.render("/")
+app.get("/home",function(req, res){
+  if(req.isAuthenticated())
+  {  Blog.find({},function(err,article){
+      if(err){
+        
+       console.log(err)
       }
-      else
-      {
-      res.render("home", {posts:article,username:x,photo:y})
-    }
-  })
+        else
+     {
+      article.sort((a,b)=>{  return new Date(b.timestamp) - new Date(a.timestamp);})
+          res.render("home", {posts:article,username:x,photo:y})
+        }})
+      }
+        else
+        {
+            res.redirect("/login")
+        }
+  
 
-
-});
+})
 app.get("/logout",function(req,res){
   req.logout();
   res.redirect("/");
@@ -159,13 +160,17 @@ app.get("/login",function(req,res){
 })
 
 app.get("/about", function(req, res){
-  let set;
+  let m='';
   axios.get("http://newsapi.org/v2/everything?q=everything&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=e3f497d14748461f9353b8a6fd22bdfd")
-  .then(data=>{
-    {set=data.articles};
+  .then(function (response){
+   m=response.data.articles
+    console.log(m)
+   
   })
-  console.log(set)
-  res.render("about", {aboutContent: set});
+
+   res.render("about", {aboutContent: m})
+ 
+  
 });
 
 
@@ -177,9 +182,9 @@ app.get("/register",function(req,res){
 })
 app.get("/compose", function(req, res){
   if(req.isAuthenticated())
-  res.redirect("/");
+  res.render("compose");
   else
-  res.render("compose")
+  res.redirect("/login")
 });
 
 
@@ -193,7 +198,7 @@ app.post("/register",function(req,res){
     }
     else
     passport.authenticate("local")(req,res,function(){
-      res.render("home")
+      res.redirect("/home")
     })
   })
 
@@ -201,22 +206,49 @@ app.post("/register",function(req,res){
 
 })
 
-app.post('/login',function(req,res){
+// app.post('/login',function(req,res){
+
+
+//   req.login(user, function(err){
+//     req.session.messages = "Login successfull";
+//     req.session.authenticated = true;
+//     req.authenticated = true;
+    
+//     if (err) {
+//       console.log(err);
+//       res.send("Incorrect email or password")
+      
+//     } else {
+
+//     passport.authenticate("local")(req, res, function(){
+        
+//         res.redirect("/home");
+//       });
+//     }
+//   });
+// })
+
+
+
+app.post('/login', (req, res, next) => {
   const user = new User({
-    username: req.body.username,
+    email: req.body.username,
     password: req.body.password,
   });
-
   req.login(user, function(err){
     if (err) {
       console.log(err);
     } else {
       passport.authenticate("local")(req, res, function(){
-        res.render("home");
+        res.redirect("/home");
       });
     }
-  });
+});
 })
+
+
+
+
 
 app.post("/delete",function(req,res){
   const id=(req.body.checkbox)
@@ -250,7 +282,7 @@ app.post("/compose", function(req, res){
 app.get("/posts/:postId", function(req, res){
 
   const requestedPostId =req.params.postId;
-  
+
     Blog.findOne({_id: requestedPostId}, function(err, post)
     {
       if(err){
@@ -258,57 +290,46 @@ app.get("/posts/:postId", function(req, res){
       }
     else
      {
-       res.render("post",{title: post.title,
-                     content: post.content,
-                     date:post.timestamp})
-    //  Blog.update({comment:"New comment"},function(err,comm){
-    //         if (err){console.log(err)}
-    //         else{
-    //           res.render("post", {
-    //              title: post.title,
-    //              content: post.content,
-    //              comment:comm.comment,
-    //              date:post.timestamp})
-    //             }
-    //         })
-          }
-     })
+      User.find({},function(err,comment){
+        if(err){
+          console.log(err)
+        }
+
+        else
+     
+          { res.render("post", {
+            title: post.title,
+            post:post._id,
+            content: post.content,
+            date:post.timestamp,
+           comment:comment});
+          }})
+    
+      
+       
+     }
+
+         
+        })
      
     })
-     
-    
 
-  
-  
-
-// app.get("/posts/:postName", function(req, res){
-//   const requestedTitle = (req.params.postName);
-//   Blog.findOne({_id:requestedTitle},function(err,article){
-//  console.log(article)
-//     const storedTitle = (article._id);
-//     console.log(storedTitle)
-//     if(err){console.log(err)}
-//         if (!err)
-//          {
-//           res.render("post", {title: article.title,content: article.content});
-//            }  
-//   })
- 
-// });
-
-
-app.get("/comment",function(req,res){
-  Comment.find({},function(err,com){
-    console.log(com)
+app.post("/do-comment",function(req,res){
+ var myId=`${req.body.post_id}`
+  Blog.update({"_id":ObjectId(myId)},{
+    $push:{
+      "comments":{username:req.body.username,comment:req.body.comment}
+    }
+  },function(err,post){
     if(err){
-      console.log(err)
+      console.log(err);
     }
     else
-    res.render("comment",{posts:com})
-  })
+    res.send("comment successfull");
+  } )
 })
-
-
+  
+  
 
 
 app.listen(3000, function() {
