@@ -42,13 +42,14 @@
     <hr>
     <div class="head2">
     
-      <% const postString = post.content; %>
-      <p><%- post.content +"..."%></p>  
+      
+     
         <a href="/posts/<%=post._id%>">Read More</a>
         </p>
     
       <form action="/delete" method="post" >
         <button type="submit" name="checkbox" value="<%=post._id%>"  >DELETE</button>
+        <button type="" name="edit" value="<%=post._id%>"  ><a href="/compose-edit/<%= post.id %> ">EDIT</a></button>
         <br><span><%=post.likes%> people like this.</span>
     </form>
    

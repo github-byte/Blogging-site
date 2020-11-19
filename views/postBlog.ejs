@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" >
+
+<head >
+<meta charset="utf-8">
+<title>Daily Journal</title>
+<meta charset="utf-8">
+<script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+<link rel="stylesheet" href="/css/styles.css">
+
+                            <nav class="navbar navbar-default">
+                            <div class="container">
+                            <div class="navbar-header">
+                            <p class="navbar-brand">DAILY JOURNAL</p>
+                            </div>
+                            <ul class="nav navbar-nav navbar-right">
+                            <li id="home"><a href="/">WELCOME</a></li>
+                            <li id="about"><a href="/about">POPULAR</a></li>
+                            <li id="login"><a href="/logout">LOGOUT</a></li>
+                            <li id="register"><a href="/register">REGISTER</a></li>
+
+                            </ul>
+                            </div>
+                            </nav>
+                            <button class="btn btn-color"  style="position:absolute"><a href="/home">Back</a></button>
+                            <div class="container">
+                            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                            <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
+                            <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/inline/ckeditor.js"></script>
+                            <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+
+                            <div class="container-fluid">
+                            <div class="row">
+                            <div class="col-lg-10">
+                            <img img class="home-img" src="https://cdn.pixabay.com/photo/2018/04/06/23/22/notebook-3297317_1280.jpg" alt="">
+                            <h1 class="home-h1"><%=title%></h1>
+                            <hr>
+                            <p class="home-p">Created at:<%=date%></p>
+                            <p class="home-p" id="editor" contenteditable="true"><%-content%></p>
+<!--                          
+                            <form method="POST" class="form"  onsubmit="return doComment(this)" >
+                            <h3 class="home-h1">Comments</h3>
+                            <hr>
+                            <div class="media">
+                            <div class="media-body">
+                            <input  name="post_id" type="text" value="<%=id%>">
+                            <input type="text" name="username" >
+                            <textarea class="form-control" name="comment" rows="5" cols="30"></textarea>
+                            <button class="btn btn-color"  type="submit" >Submit</button>
+                            </div>
+                            </div>  
+                            </form> -->
+                            </div>
+
+                            </div>
+                            </div>
+                            </div>
+
+                            <!-- <div class="row">
+                            <div class="col-lg-2">
+                            <h1>Recent posts</h1>
+                            </div>
+                            </div>
+
+
+
+                            <script>
+                            CKEDITOR.replace( 'comment' );
+                            </script> -->
+
+
+                
+                            <%- include("partials/footer"); -%>
+                            

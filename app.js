@@ -14,22 +14,21 @@ const passportLocalMongoose=require("passport-local-mongoose")
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const ObjectId=require("mongodb").ObjectID
 
+
 const app = express();
 
 
-const aboutContent = "Share your amazing experiences";
 const today = new Date();
-            const dateTime = today.getDate()+'-'+(today.getMonth()+1)+'-'+ today.getFullYear()+ ' ' + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+ const dateTime = today.getDate()+'-'+(today.getMonth()+1)+'-'+ today.getFullYear()+ ' ' + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 console.log(dateTime)
 
 
 app.set('view engine', 'ejs');
 
-
+var jsonParser = bodyParser.json()
 
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
-
 
 app.use(session({
 secret:"Our little secret.",
@@ -59,9 +58,21 @@ const userSchema=new mongoose.Schema({
   password:String,
   googleId:String,
   timestamp:String,
-  likedPost:String,
+  likedPost:[String],
+  posts:[blogSchema]
 
 })
+
+const publicBlogschema=new mongoose.Schema({
+  author:String,
+  title:String,
+  post:String,
+  like:[String],
+
+})
+
+
+
 
 const commentSchema={
   reply:String
@@ -73,7 +84,8 @@ userSchema.plugin(passportLocalMongoose)
 userSchema.plugin(findOrCreate)
 const User= new mongoose.model('User',userSchema)
 const Blog=mongoose.model("Blog",blogSchema)
-const Comment=mongoose.model("Comment",commentSchema)
+const Comment =mongoose.model("Comment",commentSchema)
+const Public=mongoose.model('Public',publicBlogschema)
 
 
 passport.use(User.createStrategy())
@@ -108,6 +120,38 @@ function(accessToken, refreshToken, profile, cb) {
 }
 ));
 
+const pblog=new Public({
+  author:"Me",
+  title:"This",
+  post:"This story"
+})
+
+
+app.get("/publicBlogs",function(req,res){
+  Public.find({},function(err,post){
+    console.log(post)
+    if(err){
+      console.log(err)
+    }
+    else{
+      res.render("publicBlogs",{post:post})
+    }
+  })
+})
+app.get("postBlog/:postId",function(req,res){
+  Public.findOne({_id:req.params.postId},function(err,post){
+    if(err)
+{
+  console.log(err)
+}
+  else
+  {
+    res.render("postBlog",{title:post.title,date:"23",content:post.post})
+  }
+
+
+})
+})
 
 
 
@@ -127,7 +171,10 @@ app.get("/auth/google/home",
     res.redirect("/home");
   });
 
-
+app.get("/LoginToView",function(req,res){
+  if(!req.isAuthenticated())
+res.render("LoginToView")
+})
 
 
 
@@ -146,7 +193,7 @@ app.get("/home",function(req, res){
       }
         else
         {
-            res.redirect("/login")
+            res.redirect("/LoginToView")
         }
   
 
@@ -161,17 +208,70 @@ app.get("/login",function(req,res){
 
 app.get("/about", function(req, res){
   let m='';
-  axios.get("http://newsapi.org/v2/everything?q=everything&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=e3f497d14748461f9353b8a6fd22bdfd")
+  axios.get(`http://newsapi.org/v2/everything?q=everything&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=e3f497d14748461f9353b8a6fd22bdfd`)
   .then(function (response){
    m=response.data.articles
-    console.log(m)
-   
+   res.render("about", {aboutContent: m,user:req.isAuthenticated()})
   })
-
-   res.render("about", {aboutContent: m})
- 
   
+  })
+  app.get("/sports", function(req, res){
+    let m='';
+    axios.get(`http://newsapi.org/v2/everything?q=sports&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=e3f497d14748461f9353b8a6fd22bdfd`)
+    .then(function (response){
+     m=response.data.articles
+     res.render("sports", {aboutContent: m})
+    
+    }) 
 });
+app.get("/entertainment", function(req, res){
+  let m='';
+  axios.get(`http://newsapi.org/v2/everything?q=entertainment&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=e3f497d14748461f9353b8a6fd22bdfd`)
+  .then(function (response){
+   m=response.data.articles
+   res.render("entertainment", {aboutContent: m})
+  
+  }) 
+});
+app.get("/politics", function(req, res){
+  let m='';
+  axios.get(`http://newsapi.org/v2/everything?q=politics&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=e3f497d14748461f9353b8a6fd22bdfd`)
+  .then(function (response){
+   m=response.data.articles
+   res.render("politics", {aboutContent: m})
+  
+  }) 
+});
+app.get("/coronavirus", function(req, res){
+  let m='';
+  axios.get(`http://newsapi.org/v2/everything?q=coronavirus&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=e3f497d14748461f9353b8a6fd22bdfd`)
+  .then(function (response){
+   m=response.data.articles
+   res.render("coronavirus", {aboutContent: m})
+  
+  }) 
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -180,15 +280,6 @@ app.get("/register",function(req,res){
   res.render("register")
  
 })
-app.get("/compose", function(req, res){
-  if(req.isAuthenticated())
-  res.render("compose");
-  else
-  res.redirect("/login")
-});
-
-
-
 
 app.post("/register",function(req,res){
   User.register({username:req.body.username},req.body.password,function(err,user){
@@ -201,33 +292,7 @@ app.post("/register",function(req,res){
       res.redirect("/home")
     })
   })
-
-
-
 })
-
-// app.post('/login',function(req,res){
-
-
-//   req.login(user, function(err){
-//     req.session.messages = "Login successfull";
-//     req.session.authenticated = true;
-//     req.authenticated = true;
-    
-//     if (err) {
-//       console.log(err);
-//       res.send("Incorrect email or password")
-      
-//     } else {
-
-//     passport.authenticate("local")(req, res, function(){
-        
-//         res.redirect("/home");
-//       });
-//     }
-//   });
-// })
-
 
 
 app.post('/login', (req, res, next) => {
@@ -247,6 +312,27 @@ app.post('/login', (req, res, next) => {
 })
 
 
+app.get('/profile', (req, res) => {
+  if(req.isAuthenticated()) {
+      User.findById(req.user.id, (err, foundUser)=> {
+          if(err) {
+              console.log(err);
+              res.send('Please log in to see your profile.');
+          } else {
+              if (foundUser) {
+                  console.log(foundUser);
+                  res.render('profile', { postsArray: foundUser.posts, userName: foundUser.googleId, authenticated: req.isAuthenticated() });
+              }
+              else{
+                  res.send("Please log in to see your profile.");
+              }
+          }
+      });
+  } else {
+      res.send("Please log in to see your profile.");
+  }
+});
+
 
 
 
@@ -261,7 +347,13 @@ app.post("/delete",function(req,res){
     
   })
 })
-
+                                        // compose
+app.get("/compose", function(req, res){
+  if(req.isAuthenticated())
+  res.render("compose");
+  else
+  res.redirect("/LoginToView")
+});
 
 app.post("/compose", function(req, res){
 
@@ -279,6 +371,42 @@ app.post("/compose", function(req, res){
   });
 });
 
+
+app.get("/compose-edit/:postId",function(req,res){
+  Blog.findOne({_id:req.params.postId},function(err,post){
+    res.render("compose-edit",{id:post._id,title:post.title,content:post.content})
+  })
+})
+
+
+app.post("/compose-edit/:postId",function(req,res){
+  const requestedPostId =req.params.postId;
+ 
+  Blog.findById(requestedPostId,function(err,post){
+    if(err){
+      console.log(err)
+    }
+    else
+    {
+      post.title=req.body.title;
+      post.content=req.body.content;
+        post.save(function(err){
+      if(err)
+      console.log(err);
+      else
+      {
+      res.redirect("/home");
+      console.log(post)}
+    })
+  }
+  })
+})
+
+
+
+
+
+
 app.get("/posts/:postId", function(req, res){
 
   const requestedPostId =req.params.postId;
@@ -288,44 +416,51 @@ app.get("/posts/:postId", function(req, res){
       if(err){
         console.log(err)
       }
-    else
-     {
-      User.find({},function(err,comment){
-        if(err){
-          console.log(err)
-        }
-
-        else
-     
-          { res.render("post", {
-            title: post.title,
-            post:post._id,
-            content: post.content,
-            date:post.timestamp,
-           comment:comment});
-          }})
-    
-      
-       
-     }
-
-         
-        })
-     
+      else{
+        console.log(post)
+          res.render("post", {
+              title: post.title,
+              content:post.content,
+              id:post._id,
+              post:post,
+              date:post.timestamp
+             });
+            
+      }
     })
+  })
+
+     
+
+    // app.post("/posts/:postId", function(req, res){
+
+    //   const requestedPostId =req.params.postId;
+  
+    //   User.save(function(err){
+    //     if(err){
+    //       console.log(err)
+    //     }
+    //     else
+    //     {
+          
+    //       res.redirect("/post")
+    //     }
+    //   })
+
+    // })
+
 
 app.post("/do-comment",function(req,res){
- var myId=`${req.body.post_id}`
-  Blog.update({"_id":ObjectId(myId)},{
+ Blog.update({_id:(req.body.post_id)},{
     $push:{
       "comments":{username:req.body.username,comment:req.body.comment}
     }
   },function(err,post){
     if(err){
-      console.log(err);
+      alert(err)
     }
     else
-    res.send("comment successfull");
+    res.send("success")
   } )
 })
   

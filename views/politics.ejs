@@ -1,5 +1,6 @@
 <%- include("partials/header"); -%>
 <div class="container">
+   
     <div class="row">
         <h1 class="home-h1">Popular</h1>
         <nav class="nav navbar-nav navbar-right">
@@ -9,7 +10,7 @@
             <li><a href="/coronavirus">Coronavirus</a></li>
             
         </nav>
-    </div>
+        </div>
     <% aboutContent.map(function(e){ %> 
         <hr>
         <h1 style="margin-top: 50px;"><%= e.title %></h1>
@@ -19,7 +20,7 @@
         </div>
         <div class="col-lg-8"> 
         <h3 style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ;"> <%= e.description %></h3>
-        <button class="btn btn-color"><a href="<%=e.url %>" style="text-decoration: none;color:white">Read More</a></button>
+        <button class="btn btn-color"><a href="<%=e.url %>" style="text-decoration: none;color:white">More</a></button>
     </div>
     </div>
    <%})  %>  

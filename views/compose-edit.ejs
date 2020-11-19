@@ -28,14 +28,14 @@
  </nav>
  <div  class="container">
     <h1 class="home-h1">Compose</h1>
-    <form class="" action="/compose" method="post">
+    <form class="" action="/compose-edit/<%=id%> " method="post">
       <div class="form-group">
         <label>Title</label>
-        <input class="form-control" type="text" name="postTitle" >
+        <input class="form-control" type="text" name="postTitle" value="<%=title%> ">
         <label >Post</label>
-        <textarea class="form-control" name="postBody" rows="5" cols="30" ></textarea>
+        <textarea class="form-control" name="postBody" rows="5" cols="30" ><%=content%></textarea>
       </div>
-      <button class="btn btn-color"  name="button" >Publish</button>
+      <button class="btn btn-color"  name="button" ><a href="/home">UPDATE</a></button>
     </form>
   </div>
     <script>

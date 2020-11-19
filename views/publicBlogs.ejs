@@ -1,0 +1,21 @@
+<%- include("partials/header"); -%>
+
+<div class="container">
+    <% post.forEach((e)=>{%>
+        <hr>
+        <h1 style="margin-top: 50px;"><%= e.title %></h1>
+        <div class="row">
+            <div class="col-lg-4">
+        <img  style="border-radius: 20px;"  src=<%=e.img%>  >
+        </div>
+        <div class="col-lg-8"> 
+        <h3 style="font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif ;"> <%= e.post.substring(0,40)+"..."%>
+        <a href="/postBlog/<%=e._id %> ">Read More</a></h3>
+        <button class="btn btn-color"><a href="<%=e.url %>" style="text-decoration: none;color:white">More</a></button>
+    </div>
+    </div>
+           
+
+   <% }) %> 
+</div>
+<%- include("partials/footer"); -%>
