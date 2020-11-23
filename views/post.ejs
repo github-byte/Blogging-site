@@ -6,87 +6,144 @@
   <title>Daily Journal</title>
   <meta charset="utf-8">
   <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital@0;1&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+   <!-- bootbox -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
 
 
-  <link rel="stylesheet" href="/css/styles.css">
+
+
   
-                              <nav class="navbar navbar-default">
-                              <div class="container">
-                              <div class="navbar-header">
-                              <p class="navbar-brand">DAILY JOURNAL</p>
-                              </div>
-                              <ul class="nav navbar-nav navbar-right">
-                              <li id="home"><a href="/">WELCOME</a></li>
-                              <li id="about"><a href="/about">POPULAR</a></li>
-                              <li id="login"><a href="/logout">LOGOUT</a></li>
-                              <li id="register"><a href="/register">REGISTER</a></li>
+  <nav class="navbar navbar-default">
+    <div class="container">
+      <div class="navbar-header">
+        <p class="navbar-brand">DAILY JOURNAL</p>
+      </div>
+        <ul class="nav navbar-nav navbar-right">
+          <li id="home"><a href="/">WELCOME</a></li>
+        <li id="about"><a href="/about">POPULAR</a></li>
+        <li id="public"><a href="/publicBlogs">BLOGS</a></li>
+        <li id="home"><a href="/home">ME</a></li>
+          <li id="login"><a href="/login">LOGOUT</a></li>
+          <li id="register"><a href="/register">REGISTER</a></li>
+          
+        </ul>
+    </div>
+  </nav>
 
-                              </ul>
-                              </div>
-                              </nav>
-                              <button class="btn btn-color"  style="position:absolute"><a href="/home">Back</a></button>
-                              <div class="container">
-                              <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-                              <script src="https://cdn.ckeditor.com/4.15.0/standard/ckeditor.js"></script>
-                              <script src="https://cdn.ckeditor.com/ckeditor5/23.0.0/inline/ckeditor.js"></script>
-                              <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
-
-                              <div class="container-fluid">
                               <div class="row">
-                              <div class="col-lg-10">
-                              <img img class="home-img" src="https://cdn.pixabay.com/photo/2018/04/06/23/22/notebook-3297317_1280.jpg" alt="">
+                                   <div class="col-md-1">
+                              <a href="/home" ><i class="fas fa-arrow-circle-left"></i></a><br>
+                              <a href="#comment"><i class="far fa-comments"></i></a>
+                         </div>                      
+                    
+                              <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+                            
+                              
+                              
+                              <div class="container">     
+                                <img  class="home-img" src="https://cdn.pixabay.com/photo/2018/04/06/23/22/notebook-3297317_1280.jpg" style="margin-top:-30px;">   
+                                   <div class="col-md-8 " style="margin-left: 50px;">
+                             
                               <h1 class="home-h1"><%=title%></h1>
                               <hr>
-                              <p class="home-p">Created at:<%=date%></p>
-                              <p class="home-p" id="editor" contenteditable="true"><%-content%></p>
+                              <p class="home-p" style="color: gray;"><i class="fas fa-calendar-week"></i>   Created at   <%=date %> </p>
+                              <h4 class="home-p" id="editor" ><%-content%></h4>
 
                               <form method="POST" class="form"  onsubmit="return doComment(this)" >
                               <h3 class="home-h1">Comments</h3>
                               <hr>
                               <div class="media">
                               <div class="media-body">
-                              <input  name="post_id" type="text" value="<%=id%>">
-                              <input type="text" name="username" >
-                              <textarea class="form-control" name="comment" rows="5" cols="30"></textarea>
+                              <input  name="post_id"  type="hidden" value="<%=id%>" >
+                              <label id="name">Name</label>
+                              <input type="text" name="name"  class="form-control" placeholder="Name"/>
+                              <br>
+                              <label id="comment">Comment</label>
+                              <textarea class="form-control" name="comment" rows="5" cols="30" id="comment"></textarea>
                               <button class="btn btn-color"  type="submit" >Submit</button>
-
-
-
-                              </div>
+                             
                               </div>
                               </form>
+                              
+                              
+                              <% comment.forEach((element)=>{%> 
+                                   <div class="panel-body">
+                                        <ul class="media-list">
+                                            <li class="media">
+                                                <div class="media-left">
+                                                    <img src="https://previews.123rf.com/images/nexusby/nexusby1810/nexusby181000286/111362910-default-avatar-placeholder-profile-icon-male.jpg" class="img-circle" style="height:80px;width:80px;">
+                                                </div>
+                                                <div class="media-body">
+                                                    <h4 class="media-heading name">
+                                                        <%=element.name %>                                                             
+                                                        <br>
+                                                      
+                                                    </h4>
+                                                    <h4 class="media-heading email">
+                                                        <%-element.username %>                                   
+                                                   </h4>
+                                                   <br>
+                                                    <p>
+                                                        <%-element.comment %> 
+                                                    </p>
+                                                </div>
+                                            </li>
+                                            </ul>
+                                            </div>
+
+                                        <% }) %> 
+                              <!-- </div> -->
+                         </div>
+                         </div>
+                        
+
+                                        <div class="col-md-2">
+                                        <h1>Recent posts</h1>
+                                        <hr>
+                                        <% post.forEach((event)=>{ %>  
+                                                  <h3><a href="/posts/<%=event._id%> "><%=event.title%></a> </h3>
+                                        <% }) %> 
+                                             <hr>
+                                        </div> 
+                          
+                              </div>
+                             
+                              <!-- <div class="alert alert-success alert-dismissable" style="display:none">
+                                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                                  Success! message sent successfully.
+                              </div> -->
+                              <div class="container">
+                               
+                                <div class="modal fade" id="myModal" role="dialog">
+                                  <div class="modal-dialog">
+                                      <div class="alert alert-success alert-dismissible">
+                                          <a  class="close" data-dismiss="modal" aria-label="close">&times;</a>
+                                          <strong>Success!</strong> Indicates a successful or positive action.
+                                        </div>
+                                  </div>
+                                </div>
                               </div>
 
-                              </div>
-                              </div>
-                              </div>
-
-                              <div class="row">
-                              <div class="col-lg-2">
-                              <h1>Recent posts</h1>
-                              </div>
-                              </div>
-
-
+                
 
                               <script>
-                              CKEDITOR.replace( 'comment' );
-                              </script>
-
-
-                              <script>
-                              function doComment(form){                                
+                              function doComment(form){                 
+                                    // form.preventDefault();   
+                                             var id=form.post_id.value       
                               $.ajax({ 
                               url:"/do-comment",                            
                               method:"POST",
-                              data:{username:form.username.value,comment:form.comment.value,post_id:form.post_id.value},
-                              error: function(error) { alert (error);
-                                    },
+                              data:{comment:form.comment.value,post_id:form.post_id.value,name:form.name.value},
                               success:function(response){
-                              alert(response);
+                             bootbox.alert("Comment added")
+                          
                               }
 
                               })

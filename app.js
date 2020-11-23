@@ -19,7 +19,7 @@ const app = express();
 
 
 const today = new Date();
- const dateTime = today.getDate()+'-'+(today.getMonth()+1)+'-'+ today.getFullYear()+ ' ' + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+ const dateTime = today.getDate()+'-'+(today.getMonth()+1)+'-'+ today.getFullYear();
 console.log(dateTime)
 
 
@@ -52,8 +52,17 @@ const blogSchema={
   content:String,
   timestamp:String,
   likes:Number,
+  comments:[
+  {  username:String,
+    name:String,
+    comment:String
+    },
+
+  ],
+  time:String
 }
 const userSchema=new mongoose.Schema({
+  username:String,
   email:String,
   password:String,
   googleId:String,
@@ -67,16 +76,18 @@ const publicBlogschema=new mongoose.Schema({
   author:String,
   title:String,
   post:String,
-  like:[String],
+  img:String,
+  like:Number,
+  timestamp:String,
+  comments:[
+    { username:String,
+      name:String,
+      comment:String
+      }
+    ],
+    time:String
 
 })
-
-
-
-
-const commentSchema={
-  reply:String
-}
 
 
 userSchema.plugin(passportLocalMongoose)
@@ -84,7 +95,6 @@ userSchema.plugin(passportLocalMongoose)
 userSchema.plugin(findOrCreate)
 const User= new mongoose.model('User',userSchema)
 const Blog=mongoose.model("Blog",blogSchema)
-const Comment =mongoose.model("Comment",commentSchema)
 const Public=mongoose.model('Public',publicBlogschema)
 
 
@@ -120,12 +130,6 @@ function(accessToken, refreshToken, profile, cb) {
 }
 ));
 
-const pblog=new Public({
-  author:"Me",
-  title:"This",
-  post:"This story"
-})
-
 
 app.get("/publicBlogs",function(req,res){
   Public.find({},function(err,post){
@@ -138,7 +142,8 @@ app.get("/publicBlogs",function(req,res){
     }
   })
 })
-app.get("postBlog/:postId",function(req,res){
+app.get("/showblog/:postId",function(req,res){
+  
   Public.findOne({_id:req.params.postId},function(err,post){
     if(err)
 {
@@ -146,15 +151,33 @@ app.get("postBlog/:postId",function(req,res){
 }
   else
   {
-    res.render("postBlog",{title:post.title,date:"23",content:post.post})
+    console.log(req.isAuthenticated())
+    res.render("showblog",{title:post.title,date:post.timestamp,content:post.post,author:post.author,image:post.img,
+  id:post._id,people:post.like,comment:post.comments,auth:req.isAuthenticated()})
   }
 
 
 })
 })
 
-
-
+app.post("/do-commented",function(req,res){
+ Public.findOne({_id:req.body.post_id},function(err,post){
+    if(err){
+      console.log(err)
+    }
+    else
+   { 
+     post.comments.push({username:req.user.username,comment:req.body.comment,name:req.body.name});
+    post.save(function(err){
+      if(err)
+      console.log(err)
+      else
+     { res.send("success")
+      console.log(post)}
+    })}
+   
+  })
+})
 
 app.get("/",function(req,res){
   res.render("welcome")
@@ -179,18 +202,38 @@ res.render("LoginToView")
 
 
 app.get("/home",function(req, res){
+
   if(req.isAuthenticated())
-  {  Blog.find({},function(err,article){
-      if(err){
+  {  
+      if(req.user.googleId==='108161711762081675784')
+    {Blog.find({},function(err,article){
+        if(err){
+          
+         console.log(err)
+        }
+          else
+       {
+        // article.sort((a,b)=>{  return new Date(b.timestamp) - new Date(a.timestamp);})
+       
+            res.render("home", {posts:article,username:x,photo:y})
+       }
+        })
+        }
+        else{
+          User.findById(req.user._id,function(err,foundUser){
+            if(err){
+              console.log(err)
+            }
+            else
+            {
+              res.render("home",{posts:foundUser.posts,username:'',photo:''})
+            }
+          })
+        }
         
-       console.log(err)
-      }
-        else
-     {
-      article.sort((a,b)=>{  return new Date(b.timestamp) - new Date(a.timestamp);})
-          res.render("home", {posts:article,username:x,photo:y})
-        }})
-      }
+        // &&req.user.googleId===ObjectId(108161711762081675784)
+    
+  }
         else
         {
             res.redirect("/LoginToView")
@@ -312,33 +355,9 @@ app.post('/login', (req, res, next) => {
 })
 
 
-app.get('/profile', (req, res) => {
-  if(req.isAuthenticated()) {
-      User.findById(req.user.id, (err, foundUser)=> {
-          if(err) {
-              console.log(err);
-              res.send('Please log in to see your profile.');
-          } else {
-              if (foundUser) {
-                  console.log(foundUser);
-                  res.render('profile', { postsArray: foundUser.posts, userName: foundUser.googleId, authenticated: req.isAuthenticated() });
-              }
-              else{
-                  res.send("Please log in to see your profile.");
-              }
-          }
-      });
-  } else {
-      res.send("Please log in to see your profile.");
-  }
-});
-
-
-
-
 app.post("/delete",function(req,res){
   const id=(req.body.checkbox)
-  console.log(id)
+  console.log(id);
   Blog.findByIdAndRemove(id,function(err){
     if(!err){
       console.log("success")
@@ -348,6 +367,27 @@ app.post("/delete",function(req,res){
   })
 })
                                         // compose
+
+app.get("/composePublic",function(req,res){
+  res.render("composePublic");
+})
+// app.post("/composePublic",function(req,res){
+//   const bpost=new Public({
+//     author:req.body.author,
+//     title:req.body.title,
+//     post:req.body.content,
+//     })
+//     bpost.save(function(err){
+//       if(err){
+//         console.log(err)
+//       }
+//       else
+//       res.redirect("/publicBlogs")
+//     })
+// })
+
+
+
 app.get("/compose", function(req, res){
   if(req.isAuthenticated())
   res.render("compose");
@@ -356,20 +396,51 @@ app.get("/compose", function(req, res){
 });
 
 app.post("/compose", function(req, res){
-
+  const bpost=new Public({
+    author:req.body.author,
+    title:req.body.postTitle,
+    post:req.body.postBody,
+    timestamp:dateTime
+    })
     const post=new Blog({
-   title:req.body.postTitle,
-   content:req.body.postBody,
-   timestamp:dateTime
+      title:req.body.postTitle,
+      content:req.body.postBody,
+      timestamp:dateTime
+       })
+    if(req.body.hasOwnProperty("public"))
+    {
+      console.log("yes")      
+      bpost.save(function(err){
+        if(err){
+          console.log(err)
+        }
+        else{
+          res.redirect("/publicBlogs")
+        }
+      })
+    }
+    
+      else{    
+        console.log("no")
+User.findById(req.user._id,function(err,foundUser){
+    post.save();
+    foundUser.posts.push(post);
+    console.log(foundUser.posts)
+
+    res.redirect("/home");
+  
+  
     })
 
-  post.save(function(err){
-    if(!err){
-      res.redirect("/home")
+  }
+  })
+
+      
+      // else if(req.body.name==='public'){
+      //   res.redirect("/publicBlog")
+      //}
  
-    }
-  });
-});
+   
 
 
 app.get("/compose-edit/:postId",function(req,res){
@@ -388,8 +459,8 @@ app.post("/compose-edit/:postId",function(req,res){
     }
     else
     {
-      post.title=req.body.title;
-      post.content=req.body.content;
+      post.title=req.body.postTitle;
+      post.content=req.body.postBody;
         post.save(function(err){
       if(err)
       console.log(err);
@@ -410,24 +481,33 @@ app.post("/compose-edit/:postId",function(req,res){
 app.get("/posts/:postId", function(req, res){
 
   const requestedPostId =req.params.postId;
-
+  User.findById(req.user._id,function(err,foundUser){
     Blog.findOne({_id: requestedPostId}, function(err, post)
     {
       if(err){
         console.log(err)
       }
       else{
-        console.log(post)
+        Blog.find({_id:{$nin:post._id}},function(err,allarticle){
+           
           res.render("post", {
               title: post.title,
               content:post.content,
               id:post._id,
-              post:post,
+              post:allarticle,
+              comment:post.comments,
               date:post.timestamp
              });
-            
+            })
       }
+          
+
+
+
+
     })
+  })
+
   })
 
      
@@ -437,32 +517,44 @@ app.get("/posts/:postId", function(req, res){
     //   const requestedPostId =req.params.postId;
   
     //   User.save(function(err){
-    //     if(err){
-    //       console.log(err)
-    //     }
-    //     else
-    //     {
-          
-    //       res.redirect("/post")
-    //     }
-    //   })
-
-    // })
+  
+    
 
 
+
+    
 app.post("/do-comment",function(req,res){
- Blog.update({_id:(req.body.post_id)},{
-    $push:{
-      "comments":{username:req.body.username,comment:req.body.comment}
-    }
-  },function(err,post){
+  Blog.findOne({_id:req.body.post_id},function(err,post){
     if(err){
-      alert(err)
+      console.log(err)
     }
     else
-    res.send("success")
-  } )
+   { 
+     post.comments.push({username:req.user.username,comment:req.body.comment,name:req.body.name});
+    post.save(function(err){
+      if(err)
+      console.log(err)
+      else
+     { res.send("success")
+      console.log(post)}
+    })}
+   
+  })
 })
+
+// app.post("/do-comment",function(req,res){
+//  Blog.update({_id:req.body.post_id},{
+//     $push:{
+//       "comments":{username:req.body.username,comment:req.body.comment}
+//     }
+//   },function(err,post){
+//     if(err){
+//       alert(err)
+//     }
+//     else
+//     res.send("success")
+//   } )
+// })
   
   
 

@@ -55,6 +55,7 @@ html {
 img{
   height:100%;
   width:100%;
+  background-image:url('https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png')
 }
 .city{
   background-color: #1abc9c;
@@ -71,6 +72,8 @@ img{
 .home-p{
   margin-top:3%;
   font-family: 'Lora', serif;
+  line-height: 2;
+  font-size: 500;
 }
 .post1{
   margin-bottom:8%;
@@ -80,7 +83,7 @@ img{
 .card1 {
   box-shadow: 1px 2px 8px 4px  grey;
   border-radius: 10px;
-  margin-left: 25%;
+  margin-left: 40%;
   height: 500px;
   width:500px;
   padding: 3%;
@@ -88,6 +91,34 @@ img{
   background: whitesmoke;
   position: relative;
  
+}
+.card2{
+  box-shadow: 1px 2px 8px 4px  grey;
+  border-radius: 10px;
+  margin-left: 30%;
+  height: 500px;
+  width:500px;
+  padding: 3%;
+  margin-top: 10%;
+  background: whitesmoke;
+  position: relative;
+}
+
+
+.dot {
+  height: 15px;
+  width: 15px;
+  background-color:#1ff3c9;
+  border-radius: 50%;
+  display: inline-flex;
+  
+}
+.dotend{
+  height: 7px;
+  width: 7px;
+  background-color:#1ff3c9;
+  border-radius: 50%;
+  display: inline-flex;
 }
 
 @keyframes move_wave {
@@ -116,7 +147,7 @@ img{
   overflow: hidden;
   height: 100%;
   bottom: -1px;
-  background-image: linear-gradient(to top, #86377b 20%, #27273c 80%);
+  background-image: linear-gradient(to top, #58d1d1 20%, #387272 80%);
 }
 .bgTop {
   z-index: 15;
@@ -166,6 +197,7 @@ animation: move-wave 3s;
   font-family: 'Lora', serif;
   font-size: xx-large;
   text-align: center;
+    text-align: center;margin-top: 10%;
 }
 .para{
   font-size: xx-large;
@@ -178,25 +210,13 @@ animation: move-wave 3s;
   background-attachment: fixed;
   background-color: rgb(82, 12, 88);
 }
-.diagonal-box {
-	background-image: linear-gradient(45deg, #654ea3, #eaafc8);
-  transform: skewY(-8deg);
-  height:600px;
-  margin-top: 200px;
-}
 
-#content {
-	max-width: 50em;
-position:relative;
-  padding-top: 10%;
-  margin-left: 10%;
-  padding-left: 20%;
-  transform: skewY(8deg);
-}
-.maldives{
+
+
+/* .maldives{
 border-top-left-radius: 30% !important;
   border-bottom-right-radius: 30% !important;
-}
+} */
 .home{
   padding-left: 200px;
   font-family: 'Lora',serif;
@@ -205,7 +225,6 @@ border-top-left-radius: 30% !important;
 .home-img{
   height:400px;
   width: 100%;
-  margin: 0 !important;
 }
 .but{
   border-radius: 100%;
@@ -214,15 +233,13 @@ border-top-left-radius: 30% !important;
 
 }
 .box{
-  background-color:#F8F8F8;
-  box-shadow:  1px 2px 5px black;
+box-shadow:0px -1px 15px 2px #aca5a538;
 border-radius: 10px;
 margin-bottom: 40px;
 height:300px;
 padding-left:30px;
 padding-top: 20px;
 padding-bottom: 10px;
-width:1100px;
 }
 
 /* .head1{
@@ -232,7 +249,7 @@ border-radius: 10px;
 } */
 .head2{
  margin-top: 30px;
- width:1000px  }
+  }
 
   .profile-pic{
 height:150px;
@@ -242,6 +259,9 @@ position: absolute;
 margin-left: 780px;
 margin-top:330px;
 box-shadow: 1px 2px 20px green;
+background-image:url('https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png');
+background-size:cover;
+background-position: center;
   }
   .profile{
     position: absolute;
@@ -251,22 +271,18 @@ font-family: 'Lora';
 
   }
   .box:hover{
-    box-shadow: 2px 3px 14px black;
     background-color: white;
     cursor: pointer;
   }
   .post{
-    margin-left: 20%;
-    margin-right: 20%;
     font-size: x-large;
     font-family: 'Lora';
-    text-align: center;
   }
   .fal{
     font-size: xx-large;
     margin-bottom:20px;
-    margin-left:50px
-
+    margin-left:50px;
+    font-weight:100;
   }
   .profile{
     text-align:center;
@@ -275,10 +291,16 @@ font-family: 'Lora';
   }
 
   .last{
-    margin-top: 1000px;
-    background-color:#693268;
+    margin-top: 100px;
+    background-color:#387272;
     height: 500px;
     width:100%px
+  }
+  .secondlast{
+    margin-top: 50px;
+    background-color:#387272;
+    height: 500px;
+    width:100%;
   }
 /* .popular-img{
   height:,
@@ -289,3 +311,36 @@ font-family: 'Lora';
   width:200px;
   border-radius: 20px;
 } */
+.far{
+  font-size: 50px;
+    margin-top: 400px;
+    margin-left: 40px;
+    position: absolute;
+    color: #37e7c4 !important;
+    font-weight: 100;
+}
+a{
+  color: #1ABC9C ;
+}
+.fa-arrow-circle-left{
+  font-size: 80px;
+  margin-left:30px;
+}
+
+.name{
+background-color: whitesmoke;
+}
+.email{
+  background-color:#bbfdf0 ;
+}
+.fa-trash{
+color:rgb(190, 69, 53);
+font-size:40px;
+
+}
+.fa-edit{
+  font-size:40px;
+}
+.fa-trash:hover{
+  color:rgb(134, 31, 31);
+}

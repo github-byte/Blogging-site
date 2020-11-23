@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
@@ -6,43 +5,46 @@
   <meta charset="utf-8">
   <title>Daily Journal</title>
   <meta charset="utf-8">
-  <link href="https://fonts.googleapis.com/css2?family=Lora:ital@0;1&display=swap" rel="stylesheet">
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-  />
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/css/styles.css">
+
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/css/styles.css">
+
   <nav class="navbar navbar-default">
     <div class="container">
       <div class="navbar-header">
         <p class="navbar-brand">DAILY JOURNAL</p>
       </div>
-        <ul class="nav navbar-nav navbar-right">
-          
-          <li id="about"><a href="/about">POPULAR</a></li>
+        <ul class="nav navbar-nav navbar-right" style="display:flex">
+          <li id="home"><a href="/">WELCOME</a></li>
+        <li id="about"><a href="/about">POPULAR</a></li>
+        <li id="public"><a href="/publicBlogs">BLOGS</a></li>
+        <li id="home"><a href="/home">ME</a></li>
+       
           <li id="login"><a href="/login">LOGIN</a></li>
           <li id="register"><a href="/register">REGISTER</a></li>
+          
         </ul>
     </div>
   </nav>
+  
 
   <body>
-    
-    
-        
-<div style="height:600px;position: relative;">
+ 
+ 
+
+
+    <div style="height:600px;position: relative;">
   <div class="waveWrapper waveAnimation">
     <div class="waveWrapperInner bgTop">
       <div class="wave waveTop" style="background-image: url('http://front-end-noobs.com/jecko/img/wave-top.png')"></div>
     </div>
-    <p classname="top"  style="color: white;
-    position: relative;
-    z-index: 90;
-    font-family: 'Lora', serif;
-    font-size: xx-large;
-    text-align: center;margin-top: 10%;">Write when Inspiration strikes!!</p>
+    <p class="top  "  data-aos="fade-up" data-aos-anchor-placement="bottom-bottom"  >Write when Inspiration strikes!!</p>
     <div class="waveWrapperInner bgMiddle">
       <div class="wave waveMiddle" style="background-image: url('http://front-end-noobs.com/jecko/img/wave-mid.png')"></div>
     </div>
@@ -53,64 +55,92 @@
 </div>
   
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+   
+
     <script>
         AOS.init();
       </script>
-      
 </div>
+
+
 <div data-aos="fade-up" data-aos-anchor-placement="bottom-bottom" >
   <div data-aos="fade-up" data-aos-anchor-placement="bottom-bottom"  >
-    <div class="row" style="display: flex;">
-    <div class="card card1 col-lg-6" style="height:300px;width:300px;">
+    <div  >
+    <div class="card card1 " style="height:300px;width:300px;margin-top: 200px;;">
       <img src="https://cdn.pixabay.com/photo/2018/04/06/23/22/notebook-3297317_1280.jpg" alt="">
       </div>
-    <div class="para col-lg-6  home-h1"  >
-      <p>Write,sleep,repeat</p>
-
+    <div class="para   home-h1"  >
+      <h3>Write personal stories publish only if you want or use as personal journal!</h3>
+      <span>Now get to it!!</span>
     </div>
   </div>
 </div>
 </div>
-<div data-aos="fade-up" data-aos-anchor-placement="bottom-bottom">
-  <div class="card card1" style="height:300px;width:300px; ">
-<img src="https://cdn.pixabay.com/photo/2015/09/05/07/28/writing-923882_1280.jpg" alt="">
-  </div>
-  </div>
-  <div class="diagonal-box">
-    <div id="content" style="display:flex"> 
-    <img  class="mySlides   w3-animate-fading" style="border-top-left-radius: 30% !important; height:300px;
-    border-bottom-right-radius: 30% !important;margin-left:-100px;"
-    src="https://cdn.pixabay.com/photo/2017/01/20/00/30/maldives-1993704_1280.jpg">
-    <img  class="mySlides     w3-animate-fading"     style="border-top-left-radius: 30% !important; height:300px;
-    border-bottom-right-radius: 30% !important;margin-left:-100px;"    
-     src="https://images.unsplash.com/photo-1494548162494-384bba4ab999?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80" alt="">
-    <p style="font-size: xx-large;font-weight: 100;padding-left: 30%;">Write</p>
-       </div>
+<div class="container" style="text-align: center;margin-top: 30px;">
+  <span class="dotend"></span>
+<span class="dot"></span>
+<span class="dot"></span>
+<span class="dot"></span>
+<span class="dotend"></span>
+</div>
+<div data-aos="fade-up" data-aos-anchor-placement="bottom-bottom" >
+  <div data-aos="fade-up" data-aos-anchor-placement="bottom-bottom"  >
+    <div  >
+    <div class="card card1 " style="height:300px;width:300px;margin-top:30px;">
+      <img src="https://www.itsmfusa.org/resource/resmgr/images/more_images/news-3.jpg" alt="">
+      </div>
+    <div class="para   home-h1"  >
+      <h3>Get latest News</h3>
+      <span>Go look for different categories </span>
+    </div>
   </div>
 </div>
-<div class="container-fluid last">
-
 </div>
+<div class="container" style="text-align: center;margin-top: 30px;">
+  <span class="dotend"></span>
+  <span class="dot"></span>
+  <span class="dot"></span>
+  <span class="dotend"></span>
+  </div>
 
+    <div class="container-fluid secondlast">
 
+      <img src="https://cdn.pixabay.com/photo/2018/03/19/18/20/tea-time-3240766_1280.jpg" alt="">
+    </div>
+    <div class="container" style="text-align: center;margin-top: 30px;">
+      <span class="dotend"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dotend"></span>
+      </div>
 
-<script>
-  var slideIndex = 0;
-  carousel();
+      <div data-aos="fade-up" data-aos-anchor-placement="bottom-bottom" >
+        <div data-aos="fade-up" data-aos-anchor-placement="bottom-bottom"  >
+          <div  >
+       
+            <img class="card card1 "  style="height:300px;width:300px;margin-top:100px;border-radius: 100%"  src="https://cdn.pixabay.com/photo/2015/01/15/11/06/success-600183_1280.jpg" alt="">
   
-  function carousel() {
-    var i;
-    var x = document.getElementsByClassName("mySlides");
-    for (i = 0; i < x.length; i++) {
-      x[i].style.display = "none"; 
-    }
-    slideIndex++;
-    if (slideIndex > x.length) {slideIndex = 1} 
-    x[slideIndex-1].style.display = "block"; 
-    setTimeout(carousel, 2000); 
-    
-  }
-  </script>
+          <div class="para   home-h1"  >
+            <span>Go explore </span>
+          </div>
+        </div>
+      </div>
+      </div>
+
+<!-- </div> -->
+
+<div class="container-fluid last">
+  <h2 style="color:white;text-align:center">Contact</h2>
+  <hr>
+  <div class="container text-center">
+    <a href="www.google.com"><i class="fas fa-envelope"  style="font-size:xx-large;"></i></a>
+    <a href="www.facebook.com"><i class="fab fa-twitter"  style="font-size:xx-large;"></i></a>
+    <a href="www.twitter.com"><i class="fab fa-facebook"  style="font-size:xx-large;"></i></a>
+</div>
+</div>
+
+<%- include("partials/footer"); -%>
+
  
 
 

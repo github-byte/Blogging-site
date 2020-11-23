@@ -1,0 +1,107 @@
+<%- include("partials/header"); -%>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+   <!-- bootbox -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
+  <link rel="stylesheet" href="/css/styles.css">
+<div class="row">
+    <a href="/publicBlogs"><i class="fas fa-arrow-circle-left"></i></a><br>
+    <div class="col-md-1"><a href="#comment"><i class="far fa-comments"></i></a></div> 
+    <div class="col-md-11">                    
+<div class="container post">
+<h1><%=title %> </h1>
+<div class="row">
+<div class="col-md-6">
+<h4 style="text-align: left;"><i class="fas fa-calendar-week"></i>   <%=date %> </h4>
+</div>
+<div class="col-md-6">
+    <p style="color: gray;text-align: right;font-size:large">Written by:   <%=author%> </p>
+    </div>
+</div>
+<hr>
+<img src="<%=image %> " style="height: 800px;">
+<p style="margin-top:50px;"><%-content%></p>
+
+
+<% if(auth) {%> 
+<form method="POST" class="form"  onsubmit="return doComment(this)" >
+    <h3 class="home-h1">Comments</h3>
+    <hr>
+    <div class="media">
+    <div class="media-body">
+    <input  name="post_id"  type="hidden" value="<%=id%>" >
+    <label id="name">Name</label>
+    <input type=""text" name="name" placeholder="Name"  class="form-control"/>
+    <label id="name">Comment</label>
+    <textarea class="form-control" name="comment" rows="5" cols="30" id="comment"></textarea>
+    <button class="btn btn-color"  type="submit" style="margin-top: 30px;">Submit</button>
+   
+    </div>
+    </form>
+    </div>
+    
+    <% comment.forEach((element)=>{%> 
+        <div class="panel-body">
+            <ul class="media-list">
+                <li class="media">
+                    <div class="media-left">
+                        <img src="https://previews.123rf.com/images/nexusby/nexusby1810/nexusby181000286/111362910-default-avatar-placeholder-profile-icon-male.jpg" class="img-circle" style="height:80px;width:80px;">
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading">
+                           <div class="light"> <%-element.username %></div>
+                            <br>
+                            <h4 class="media-heading">
+                                <%=element.name %>
+                                <br>
+                            </h4>
+                            <small>
+                                commented on <a href="#">Post Title</a>
+                            </small>
+                        </h4>
+                        <div class="light">
+                        <p>
+                            <%-element.comment %> 
+                        </p>
+                    </div>
+                    </div>
+                </li>
+                </ul>
+                </div>
+             <% }) %> 
+<% }  else { %> 
+    <div>
+    <div style="color: blue;"><a href="/login">Login to add comments</a></div>
+</div>
+</div>
+
+<% } %> 
+
+
+</div>
+</div>      
+
+
+
+
+
+<script>
+    function doComment(form){                      
+    $.ajax({ 
+    url:"/do-commented",                            
+    method:"POST",
+    data:{comment:form.comment.value,post_id:form.post_id.value,name:form.name.value},
+    success:function(response){
+    alert(response);
+    }
+
+    })
+    return false;
+    }
+
+
+    </script>
+
+<%- include("partials/footer"); -%>

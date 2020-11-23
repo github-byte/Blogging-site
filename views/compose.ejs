@@ -28,20 +28,23 @@
  </nav>
  <div  class="container">
     <h1 class="home-h1">Compose</h1>
+  
     <form class="" action="/compose" method="post">
       <div class="form-group">
+        <label>Author name</label>
+        <input class="form-control" type="text" name="author" >
         <label>Title</label>
         <input class="form-control" type="text" name="postTitle" >
         <label >Post</label>
         <textarea class="form-control" name="postBody" rows="5" cols="30" ></textarea>
       </div>
-      <button class="btn btn-color"  name="button" >Publish</button>
+      <button class="btn btn-color"  name="private" >Save draft</button>
+      <button class="btn btn-color"name="public" >Public</button>
     </form>
   </div>
-    <script>
     
-      // Replace the <textarea id="editor1"> with a CKEditor 4
-      // instance, using default configuration.
-      CKEDITOR.replace( 'postBody' );
-  </script>
+
+      <script>
+     CKEDITOR.replace( 'postBody' );
+    </script>
 <%- include("partials/footer"); -%>
