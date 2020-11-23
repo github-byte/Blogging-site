@@ -366,26 +366,6 @@ app.post("/delete",function(req,res){
     
   })
 })
-                                        // compose
-
-app.get("/composePublic",function(req,res){
-  res.render("composePublic");
-})
-// app.post("/composePublic",function(req,res){
-//   const bpost=new Public({
-//     author:req.body.author,
-//     title:req.body.title,
-//     post:req.body.content,
-//     })
-//     bpost.save(function(err){
-//       if(err){
-//         console.log(err)
-//       }
-//       else
-//       res.redirect("/publicBlogs")
-//     })
-// })
-
 
 
 app.get("/compose", function(req, res){
@@ -436,10 +416,7 @@ User.findById(req.user._id,function(err,foundUser){
   })
 
       
-      // else if(req.body.name==='public'){
-      //   res.redirect("/publicBlog")
-      //}
- 
+   
    
 
 
@@ -510,18 +487,6 @@ app.get("/posts/:postId", function(req, res){
 
   })
 
-     
-
-    // app.post("/posts/:postId", function(req, res){
-
-    //   const requestedPostId =req.params.postId;
-  
-    //   User.save(function(err){
-  
-    
-
-
-
     
 app.post("/do-comment",function(req,res){
   Blog.findOne({_id:req.body.post_id},function(err,post){
@@ -542,23 +507,11 @@ app.post("/do-comment",function(req,res){
   })
 })
 
-// app.post("/do-comment",function(req,res){
-//  Blog.update({_id:req.body.post_id},{
-//     $push:{
-//       "comments":{username:req.body.username,comment:req.body.comment}
-//     }
-//   },function(err,post){
-//     if(err){
-//       alert(err)
-//     }
-//     else
-//     res.send("success")
-//   } )
-// })
-  
-  
+let port=process.env.PORT;
+if(port==null||port==""){
+  port=3000
+}
 
-
-app.listen(3000, function() {
-  console.log("Server started on port 3000");
+app.listen(port, function() {
+  console.log("Server started");
 })
