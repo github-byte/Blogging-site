@@ -135,7 +135,7 @@ app.get("/auth/google",
 app.get("/auth/google/home",
   passport.authenticate('google', { failureRedirect: "/login" }),
   function(req, res) {
-    // Successful authentication, redirect to secrets.
+    // Successful authentication, redirect to home.
     res.redirect("/home");
   });
 

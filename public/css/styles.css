@@ -55,7 +55,7 @@ html {
 img{
   height:100%;
   width:100%;
-  background-image:url('https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png')
+  /* background-image:url('https://www.tenforums.com/geek/gars/images/2/types/thumb_15951118880user.png') */
 }
 .city{
   background-color: #1abc9c;
@@ -190,6 +190,11 @@ animation: move-wave 3s;
 .waveAnimation .waveBottom {
   animation: move_wave 15s linear infinite;
 }
+
+
+
+
+
 .top{
   color: white;
   position: relative;
