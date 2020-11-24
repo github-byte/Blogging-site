@@ -2,7 +2,6 @@
 require('dotenv').config();
 const express = require("express");
 const axios=require("axios")
-const https=require("https")
 const  findOrCreate = require('mongoose-findorcreate')
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
