@@ -11,10 +11,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Lora:ital@0;1&display=swap" rel="stylesheet">
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://unpkg.com/@popperjs/core@2"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
    <!-- bootbox -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>
 
 
 
@@ -142,7 +140,7 @@
                               method:"POST",
                               data:{comment:form.comment.value,post_id:form.post_id.value,name:form.name.value},
                               success:function(response){
-                             bootbox.alert("Comment added")
+                             alert("Comment added")
                           
                               }
 

@@ -30,8 +30,7 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(session({
-secret:"Our little secret.",
-
+secret:process.env.SECRET,
 resave:false,
 saveUninitialised:false,
 
@@ -92,6 +91,7 @@ const publicBlogschema=new mongoose.Schema({
 userSchema.plugin(passportLocalMongoose)
 
 userSchema.plugin(findOrCreate)
+
 const User= new mongoose.model('User',userSchema)
 const Blog=mongoose.model("Blog",blogSchema)
 const Public=mongoose.model('Public',publicBlogschema)
@@ -129,60 +129,6 @@ function(accessToken, refreshToken, profile, cb) {
 }
 ));
 
-
-app.get("/publicBlogs",function(req,res){
-  Public.find({},function(err,post){
-    console.log(post)
-    if(err){
-      console.log(err)
-    }
-    else{
-      res.render("publicBlogs",{post:post})
-    }
-  })
-})
-app.get("/showblog/:postId",function(req,res){
-  
-  Public.findOne({_id:req.params.postId},function(err,post){
-    if(err)
-{
-  console.log(err)
-}
-  else
-  {
-    console.log(req.isAuthenticated())
-    res.render("showblog",{title:post.title,date:post.timestamp,content:post.post,author:post.author,image:post.img,
-  id:post._id,people:post.like,comment:post.comments,auth:req.isAuthenticated()})
-  }
-
-
-})
-})
-
-app.post("/do-commented",function(req,res){
- Public.findOne({_id:req.body.post_id},function(err,post){
-    if(err){
-      console.log(err)
-    }
-    else
-   { 
-     post.comments.push({username:req.user.username,comment:req.body.comment,name:req.body.name});
-    post.save(function(err){
-      if(err)
-      console.log(err)
-      else
-     { res.send("success")
-      console.log(post)}
-    })}
-   
-  })
-})
-
-app.get("/",function(req,res){
-  res.render("welcome")
-    
-})
-
 app.get("/auth/google",
   passport.authenticate("google",{ scope: ["profile"] }))
 
@@ -192,6 +138,19 @@ app.get("/auth/google/home",
     // Successful authentication, redirect to secrets.
     res.redirect("/home");
   });
+
+
+
+
+
+
+
+app.get("/",function(req,res){
+  res.render("welcome")
+    
+})
+
+
 
 app.get("/LoginToView",function(req,res){
   if(!req.isAuthenticated())
@@ -211,9 +170,7 @@ app.get("/home",function(req, res){
          console.log(err)
         }
           else
-       {
-        // article.sort((a,b)=>{  return new Date(b.timestamp) - new Date(a.timestamp);})
-       
+       { 
             res.render("home", {posts:article,username:x,photo:y})
        }
         })
@@ -240,17 +197,11 @@ app.get("/home",function(req, res){
   
 
 })
-app.get("/logout",function(req,res){
-  req.logout();
-  res.redirect("/");
-})
-app.get("/login",function(req,res){
-  res.render("login")
-})
+
 
 app.get("/about", function(req, res){
   let m='';
-  axios.get(`http://newsapi.org/v2/everything?q=everything&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=e3f497d14748461f9353b8a6fd22bdfd`)
+  axios.get(`http://newsapi.org/v2/everything?q=everything&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=${process.env.API_KEY}`)
   .then(function (response){
    m=response.data.articles
    res.render("about", {aboutContent: m,user:req.isAuthenticated()})
@@ -259,7 +210,7 @@ app.get("/about", function(req, res){
   })
   app.get("/sports", function(req, res){
     let m='';
-    axios.get(`http://newsapi.org/v2/everything?q=sports&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=e3f497d14748461f9353b8a6fd22bdfd`)
+    axios.get(`http://newsapi.org/v2/everything?q=sports&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=${process.env.API_KEY}`)
     .then(function (response){
      m=response.data.articles
      res.render("sports", {aboutContent: m})
@@ -268,7 +219,7 @@ app.get("/about", function(req, res){
 });
 app.get("/entertainment", function(req, res){
   let m='';
-  axios.get(`http://newsapi.org/v2/everything?q=entertainment&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=e3f497d14748461f9353b8a6fd22bdfd`)
+  axios.get(`http://newsapi.org/v2/everything?q=entertainment&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=${process.env.API_KEY}`)
   .then(function (response){
    m=response.data.articles
    res.render("entertainment", {aboutContent: m})
@@ -277,7 +228,7 @@ app.get("/entertainment", function(req, res){
 });
 app.get("/politics", function(req, res){
   let m='';
-  axios.get(`http://newsapi.org/v2/everything?q=politics&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=e3f497d14748461f9353b8a6fd22bdfd`)
+  axios.get(`http://newsapi.org/v2/everything?q=politics&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=${process.env.API_KEY}`)
   .then(function (response){
    m=response.data.articles
    res.render("politics", {aboutContent: m})
@@ -286,32 +237,13 @@ app.get("/politics", function(req, res){
 });
 app.get("/coronavirus", function(req, res){
   let m='';
-  axios.get(`http://newsapi.org/v2/everything?q=coronavirus&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=e3f497d14748461f9353b8a6fd22bdfd`)
+  axios.get(`http://newsapi.org/v2/everything?q=coronavirus&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=${process.env.API_KEY}`)
   .then(function (response){
    m=response.data.articles
    res.render("coronavirus", {aboutContent: m})
   
   }) 
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -335,7 +267,13 @@ app.post("/register",function(req,res){
     })
   })
 })
-
+app.get("/logout",function(req,res){
+  req.logout();
+  res.redirect("/");
+})
+app.get("/login",function(req,res){
+  res.render("login")
+})
 
 app.post('/login', (req, res, next) => {
   const user = new User({
@@ -401,15 +339,14 @@ app.post("/compose", function(req, res){
     
       else{    
         console.log("no")
-User.findById(req.user._id,function(err,foundUser){
+
     post.save();
     foundUser.posts.push(post);
     console.log(foundUser.posts)
 
     res.redirect("/home");
   
-  
-    })
+
 
   }
   })
@@ -505,6 +442,60 @@ app.post("/do-comment",function(req,res){
    
   })
 })
+
+app.get("/publicBlogs",function(req,res){
+  Public.find({},function(err,post){
+    console.log(post)
+    if(err){
+      console.log(err)
+    }
+    else{
+      res.render("publicBlogs",{post:post})
+    }
+  })
+})
+app.get("/showblog/:postId",function(req,res){
+  
+  Public.findOne({_id:req.params.postId},function(err,post){
+    if(err)
+{
+  console.log(err)
+}
+  else
+  {
+    console.log(req.isAuthenticated())
+    res.render("showblog",{title:post.title,date:post.timestamp,content:post.post,author:post.author,image:post.img,
+  id:post._id,people:post.like,comment:post.comments,auth:req.isAuthenticated()})
+  }
+
+
+})
+})
+
+app.post("/do-commented",function(req,res){
+ Public.findOne({_id:req.body.post_id},function(err,post){
+    if(err){
+      console.log(err)
+    }
+    else
+   { 
+     post.comments.push({username:req.user.username,comment:req.body.comment,name:req.body.name});
+    post.save(function(err){
+      if(err)
+      console.log(err)
+      else
+     { res.send("success")
+      console.log(post)}
+    })}
+   
+  })
+})
+
+
+
+
+
+
 
 let port=process.env.PORT;
 if(port==null||port==""){
