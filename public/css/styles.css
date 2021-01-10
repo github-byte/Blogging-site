@@ -81,18 +81,18 @@ img{
 }
 
 .card1 {
-  box-shadow: 1px 2px 8px 4px  grey;
+  box-shadow: 1px 2px 8px 4px  #80808026;
   border-radius: 10px;
-  margin-left: 40%;
+  margin-left: 40%; 
   height: 500px;
   width:500px;
   padding: 3%;
   margin-top: 10%;
-  background: whitesmoke;
+   background: white;
   position: relative;
- 
+
 }
-.card2{
+ .card2{
   box-shadow: 1px 2px 8px 4px  grey;
   border-radius: 10px;
   margin-left: 30%;
@@ -102,7 +102,7 @@ img{
   margin-top: 10%;
   background: whitesmoke;
   position: relative;
-}
+} 
 
 
 .dot {
@@ -132,6 +132,7 @@ img{
       transform: translateX(-50%) translateZ(0) scaleY(1)
   }
 }
+
 .waveWrapper {
   overflow: hidden;
   position: absolute;
@@ -199,10 +200,10 @@ animation: move-wave 3s;
   color: white;
   position: relative;
   z-index: 90;
-  font-family: 'Lora', serif;
+  font-family: 'Montserrat', sans-serif;
   font-size: xx-large;
   text-align: center;
-    text-align: center;margin-top: 10%;
+    margin-top: 10%;
 }
 .para{
   font-size: xx-large;
@@ -297,7 +298,7 @@ font-family: 'Lora';
 
   .last{
     margin-top: 100px;
-    background-color:#387272;
+    background-color:#1b3636;
     height: 500px;
     width:100%px
   }
@@ -307,6 +308,58 @@ font-family: 'Lora';
     height: 500px;
     width:100%;
   }
+
+  /* .notebook{
+    height:200px;
+    width:200px
+  } */
+
+  .text{
+    margin-top:100px;
+    margin-left: 200px;
+    font-family: 'Montserrat', sans-serif;
+    color:#387272
+  }
+
+
+
+    .mySlides{
+      margin-top:50px;
+      margin-bottom:50px;
+      height:600px;
+      width:1699px
+    }
+
+.textOverImg{
+  position: absolute;
+  height:600px;
+  width:800px;
+  margin-left:900px;
+  background-color:rgba(19, 48, 40, 0.726);
+}
+/* .text{
+
+} */
+
+.text1{
+      margin-left: 150px;
+    margin-right: 100px;
+    font-size: x-large;
+    text-align: center;
+    color:white;
+    font-family: 'Montserrat',sans-serif;
+    margin-top:40px
+}
+.text2{
+  font-family: 'Montserrat',sans-serif;
+  color: #387272;
+  margin-top: 100px;
+}
+
+.inner{
+  margin-left:300px !important;
+  margin-top:50px !important
+}
 /* .popular-img{
   height:,
   width:,

@@ -13,6 +13,8 @@
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/css/styles.css">
 
   <nav class="navbar navbar-default">
@@ -26,7 +28,10 @@
         <li id="public"><a href="/publicBlogs">BLOGS</a></li>
         <li id="home"><a href="/home">ME</a></li>
        
-          <li id="login"><a href="/login">LOGIN</a></li>
+          <li id="login">
+            <%if(log===true){%>
+              <a href="/login"> LOGOUT</a><% }  else {%><a href="/login"> LOGIN</a> <% } %> 
+          </a></li>
           <li id="register"><a href="/register">REGISTER</a></li>
           
         </ul>
@@ -64,18 +69,17 @@
 
 
 <div data-aos="fade-up" data-aos-anchor-placement="bottom-bottom" >
-  <div data-aos="fade-up" data-aos-anchor-placement="bottom-bottom"  >
-    <div  >
-    <div class="card card1 " style="height:300px;width:300px;margin-top: 200px;;">
-      <img src="https://cdn.pixabay.com/photo/2018/04/06/23/22/notebook-3297317_1280.jpg" alt="">
-      </div>
-    <div class="para   home-h1"  >
-      <h3>Write personal stories publish only if you want or use as personal journal!</h3>
-      <span>Now get to it!!</span>
+    <div  class="row inner" >
+    <div class="col-md-6"  >
+      <h1 class="text">Personal Journal</h1>
+
     </div>
+    <div class="  col-md-6"   style="height:300px;width:300px;">
+      <img  class="notebook" style="border-radius: 10%;box-shadow:16px 12px 13px 2px #050f0ea6"  src="https://cdn.pixabay.com/photo/2018/04/06/23/22/notebook-3297317_1280.jpg" alt="">
+      </div>
   </div>
 </div>
-</div>
+
 <div class="container" style="text-align: center;margin-top: 30px;">
   <span class="dotend"></span>
 <span class="dot"></span>
@@ -83,19 +87,19 @@
 <span class="dot"></span>
 <span class="dotend"></span>
 </div>
+
+
 <div data-aos="fade-up" data-aos-anchor-placement="bottom-bottom" >
-  <div data-aos="fade-up" data-aos-anchor-placement="bottom-bottom"  >
-    <div  >
-    <div class="card card1 " style="height:300px;width:300px;margin-top:30px;">
-      <img src="https://www.itsmfusa.org/resource/resmgr/images/more_images/news-3.jpg" alt="">
+    <div class="row inner" >
+    <div class="col-md-6" style="height:300px;width:300px;">
+      <img  style="border-radius: 10%;box-shadow:-20px 10px 14px 5px #00000085"  src="https://www.itsmfusa.org/resource/resmgr/images/more_images/news-3.jpg" alt="">
       </div>
-    <div class="para   home-h1"  >
-      <h3>Get latest News</h3>
-      <span>Go look for different categories </span>
+    <div class=" col-md-6"  >
+      <h1 class="text">Get latest News</h1>
     </div>
-  </div>
 </div>
 </div>
+
 <div class="container" style="text-align: center;margin-top: 30px;">
   <span class="dotend"></span>
   <span class="dot"></span>
@@ -103,10 +107,22 @@
   <span class="dotend"></span>
   </div>
 
-    <div class="container-fluid secondlast">
-
-      <img src="https://cdn.pixabay.com/photo/2018/03/19/18/20/tea-time-3240766_1280.jpg" alt="">
+    <!-- <div class="container-fluid secondlast"> -->
+      <div>
+        <div class="textOverImg" >
+          <h2 class="text" style="color:rgb(49, 228, 174)">Journaling gives us peace of mind</h2>
+          <p class="text1">Writing is the primary basis upon which history, communication, record keeping and art has begun. 
+            Writing is a framework for our communication. So get set go!!</p>
+        </div>
+        <div>
+      <img class="mySlides" src="https://cdn.pixabay.com/photo/2018/03/19/18/20/tea-time-3240766_1280.jpg" alt="">
+      <img class="mySlides" src="https://cdn.pixabay.com/photo/2015/07/02/10/40/writing-828911_1280.jpg" alt="">
     </div>
+    </div>
+
+
+
+
     <div class="container" style="text-align: center;margin-top: 30px;">
       <span class="dotend"></span>
       <span class="dot"></span>
@@ -115,29 +131,49 @@
       </div>
 
       <div data-aos="fade-up" data-aos-anchor-placement="bottom-bottom" >
-        <div data-aos="fade-up" data-aos-anchor-placement="bottom-bottom"  >
-          <div  >
-       
-            <img class="card card1 "  style="height:300px;width:300px;margin-top:100px;border-radius: 100%"  src="https://cdn.pixabay.com/photo/2015/01/15/11/06/success-600183_1280.jpg" alt="">
-  
-          <div class="para   home-h1"  >
-            <span>Go explore </span>
+          <div  class="row inner" >
+            <div class="col-md-4">
+            <img  style="height:300px;width:300px;border-radius: 100%"  src="https://cdn.pixabay.com/photo/2015/01/15/11/06/success-600183_1280.jpg" alt="">
+          </div>
+            <div class=" col-md-8"   >
+            <h1 class="text2">Go explore </h1>
           </div>
         </div>
-      </div>
+    
       </div>
 
-<!-- </div> -->
 
 <div class="container-fluid last">
-  <h2 style="color:white;text-align:center">Contact</h2>
+  <h2 style="color:white;text-align:center;font-family:'Montserrat',sans-serif">Contact</h2>
   <hr>
-  <div class="container text-center">
+  <div class="container text-center" >
     <a href="www.google.com"><i class="fas fa-envelope"  style="font-size:xx-large;"></i></a>
     <a href="www.facebook.com"><i class="fab fa-twitter"  style="font-size:xx-large;"></i></a>
     <a href="www.twitter.com"><i class="fab fa-facebook"  style="font-size:xx-large;"></i></a>
 </div>
 </div>
+
+
+
+<script>
+  var slideIndex = 0;
+  carousel();
+  
+  function carousel() {
+    var i;
+    var x = document.getElementsByClassName("mySlides");
+    for (i = 0; i < x.length; i++) {
+      x[i].style.display = "none"; 
+    }
+    slideIndex++;
+    if (slideIndex > x.length) {slideIndex = 1} 
+    x[slideIndex-1].style.display = "block"; 
+    setTimeout(carousel, 2000); 
+    
+  }
+  </script>
+
+
 
 <%- include("partials/footer"); -%>
 

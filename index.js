@@ -1,4 +1,3 @@
-//jshint esversion:6
 require('dotenv').config();
 const express = require("express");
 const axios=require("axios")
@@ -146,7 +145,7 @@ app.get("/auth/google/home",
 
 
 app.get("/",function(req,res){
-  res.render("welcome")
+  res.render("welcome",{log:req.isAuthenticated()})
     
 })
 
@@ -201,16 +200,19 @@ app.get("/home",function(req, res){
 
 app.get("/about", function(req, res){
   let m='';
-  axios.get(`http://newsapi.org/v2/everything?q=everything&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=${process.env.API_KEY}`)
+  https://newsapi.org/v2/everything?q=bitcoin&apiKey=e3f497d14748461f9353b8a6fd22bdfd
+ 
+  http://newsapi.org/v2/everything?q=everything&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=${process.env.API_KEY
+  axios.get(` https://newsapi.org/v2/everything?q=everything&from=2021-01-01&to=2021-01-06&sortBy=popularity&apiKey=${process.env.API_KEY}`)
   .then(function (response){
    m=response.data.articles
    res.render("about", {aboutContent: m,user:req.isAuthenticated()})
-  })
+  }).catch((error)=>console.log(error))
   
   })
   app.get("/sports", function(req, res){
     let m='';
-    axios.get(`http://newsapi.org/v2/everything?q=sports&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=${process.env.API_KEY}`)
+    axios.get(` https://newsapi.org/v2/everything?q=sports&from=2021-01-01&to=2021-01-06&sortBy=popularity&apiKey=${process.env.API_KEY}`)
     .then(function (response){
      m=response.data.articles
      res.render("sports", {aboutContent: m})
@@ -219,16 +221,14 @@ app.get("/about", function(req, res){
 });
 app.get("/entertainment", function(req, res){
   let m='';
-  axios.get(`http://newsapi.org/v2/everything?q=entertainment&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=${process.env.API_KEY}`)
+  axios.get(` https://newsapi.org/v2/everything?q=entertainment&from=2021-01-01&to=2021-01-06&sortBy=popularity&apiKey=${process.env.API_KEY}`)
   .then(function (response){
    m=response.data.articles
-   res.render("entertainment", {aboutContent: m})
-  
-  }) 
+   res.render("entertainment", {aboutContent: m})}).catch((error)=>console.log(error))
 });
 app.get("/politics", function(req, res){
   let m='';
-  axios.get(`http://newsapi.org/v2/everything?q=politics&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=${process.env.API_KEY}`)
+  axios.get(` https://newsapi.org/v2/everything?q=politics&from=2021-01-01&to=2021-01-06&sortBy=popularity&apiKey=${process.env.API_KEY}`)
   .then(function (response){
    m=response.data.articles
    res.render("politics", {aboutContent: m})
@@ -237,7 +237,7 @@ app.get("/politics", function(req, res){
 });
 app.get("/coronavirus", function(req, res){
   let m='';
-  axios.get(`http://newsapi.org/v2/everything?q=coronavirus&from=2020-10-25&to=2020-10-25&sortBy=popularity&apiKey=${process.env.API_KEY}`)
+  axios.get(` https://newsapi.org/v2/everything?q=coronavirus&from=2021-01-01&to=2021-01-06&sortBy=popularity&apiKey=${process.env.API_KEY}`)
   .then(function (response){
    m=response.data.articles
    res.render("coronavirus", {aboutContent: m})
@@ -326,7 +326,7 @@ app.post("/compose", function(req, res){
        })
     if(req.body.hasOwnProperty("public"))
     {
-      console.log("yes")      
+   
       bpost.save(function(err){
         if(err){
           console.log(err)
@@ -445,7 +445,7 @@ app.post("/do-comment",function(req,res){
 
 app.get("/publicBlogs",function(req,res){
   Public.find({},function(err,post){
-    console.log(post)
+    //console.log(post)
     if(err){
       console.log(err)
     }
